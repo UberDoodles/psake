@@ -27,6 +27,8 @@ function ExecuteInBuildFileScope {
             "config"                        = CreateConfigurationForNewContext $buildFile $framework
         }
     )
+    Write-Warning "context pushed"
+    [string]$psake.context.peek().config | write-warning
 
     # Load in the psake configuration (or default)
     LoadConfiguration $psake.build_script_dir
@@ -43,7 +45,7 @@ function ExecuteInBuildFileScope {
     $currentContext = $psake.context.Peek()
 
     if ($framework -ne $frameworkOldValue) {
-        writecoloredoutput $msgs.warning_deprecated_framework_variable -foregroundcolor Yellow
+        WriteOutput $msgs.warning_deprecated_framework_variable "warning"
         $currentContext.config.framework = $framework
     }
 
